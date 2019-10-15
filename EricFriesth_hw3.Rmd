@@ -9,3 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+
+data(flights,package="nycflights13")
+head(flights)
+
+
+
+```
