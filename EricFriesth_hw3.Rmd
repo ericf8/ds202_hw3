@@ -8,12 +8,54 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+1. 
+```{r}
+
+?flights
+
+data(flights,package="nycflights13")
+
+LongDelay = subset(flights, flights$arr_delay >= 200)
+LongDelay
+
+
+HoustonFlights = subset(flights, flights$dest == "IAH" | flights$dest == "HOU")
+HoustonFlights
+
+
+SummerDepart = subset(flights, flights$month == 7 | flights$month == 8 | flights$month == 9)
+SummerDepart
+
+
+LongDelay2 = subset(flights, flights$dep_delay <= 0 & flights$arr_delay >= 200)
+LongDelay2
+
+
+QuickFlight = subset(flights, flights$dep_delay >= 100 & flights$arr_delay < -30)
+QuickFlight
+
+```
 
 ```{r}
 
-data(flights,package="nycflights13")
-head(flights)
-
-
+data(airlines,package='nycflights13')
+data(airports,package='nycflights13')
+data(planes,package='nycflights13')
+data(weather,package='nycflights13')
 
 ```
+
+```{r}
+
+library(nycflights13)
+?flights
+?airlines
+?airports
+?planes
+?weather
+
+```
+
+
+
+
