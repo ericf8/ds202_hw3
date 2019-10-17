@@ -27,12 +27,29 @@ SummerDepart = subset(flights, flights$month == 7 | flights$month == 8 | flights
 SummerDepart
 
 
-LongDelay2 = subset(flights, flights$dep_delay <= 0 & flights$arr_delay >= 200)
+LongDelay2 = subset(flights, flights$dep_delay <= 0 & flights$arr_delay >= 120)
 LongDelay2
 
 
-QuickFlight = subset(flights, flights$dep_delay >= 100 & flights$arr_delay < -30)
+QuickFlight = subset(flights, flights$dep_delay >= 60 & flights$dep_delay - flights$arr_delay > 30)
 QuickFlight
+
+```
+2. 
+
+```{r}
+
+cancelledFlights = is.na(dep_delay) | isna(arr_delay)
+
+
+```
+3. 
+
+```{r}
+
+ggplot(flights, aes(x = flights$hour, y = flights$dep_time)) + geom_point()
+
+
 
 ```
 
