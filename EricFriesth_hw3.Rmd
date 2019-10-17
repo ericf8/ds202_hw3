@@ -5,10 +5,13 @@ date: "10/15/2019"
 output: html_document
 ---
 
+## Homework 3
+## https://github.com/ericf8/ds202_hw3
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-1. 
+1a. Arrival delay of two or more hours
 ```{r}
 
 data(flights,package="nycflights13")
@@ -16,45 +19,58 @@ data(flights,package="nycflights13")
 LongDelay = subset(flights, flights$arr_delay >= 200)
 head(LongDelay)
 
+```
+1b. Flew to Houston (IAH or HOU)
+```{r}
 
 HoustonFlights = subset(flights, flights$dest == "IAH" | flights$dest == "HOU")
 head(HoustonFlights)
 
+```
+1c. Departed in summer months (July, August, September)
+```{r}
 
 SummerDepart = subset(flights, flights$month == 7 | flights$month == 8 | flights$month == 9)
 head(SummerDepart)
 
-
+```
+1d. Arrived more than two hours late, but didn't leave late
+```{r}
 LongDelay2 = subset(flights, flights$dep_delay <= 0 & flights$arr_delay >= 120)
 head(LongDelay2)
-
+```
+1e. Were delayed by at least an hour, but made up over 30 minutes in flight
+```{r}
 
 QuickFlight = subset(flights, flights$dep_delay >= 60 & flights$dep_delay - flights$arr_delay > 30)
 head(QuickFlight)
 
 ```
-2. 
+2. This definition of cancelled flights isn't optimal because it will show you a large array of 'True's and 'False's as this operation is just testing for logic. The most import column for finding cancelled flights would be 'dep_delay' or Departure Delay as a plane that has left the airport is considered a "flight."
 
 ```{r}
 
 cancelledFlights = is.na(flights$dep_delay) | is.na(flights$arr_delay)
 head(cancelledFlights)
 
-
 ```
-3. 
+3. According to the distribution below containing flights that don't have delays grouped by hour, the best time to fly would be between the times of 5:00am and 10:00am.
 
 ```{r}
 
 library(ggplot2)
 
-zeroDelay = subset(flights, flights$dep_delay <= 0 & flights$arr_delay <= 0)
+zeroDelay = subset(flights, flights$dep_delay <= 0 & flights$arr_delay <= 0) #created a subset of flights containing only flights with 0 delay or early departures/arrivals
 
 ggplot(zeroDelay, aes(x = zeroDelay$dep_time, group = zeroDelay$hour, bins = 24)) + geom_histogram() + labs(title = "Distribution of Flights with No Delay by Hour", x = "Departure Time (Hour)", y = "Frequency of Flight") + scale_x_continuous(limits=c(0, 2400))
 
 
 ```
 4.
+flights connects to planes through a single variable, tailnum.
+flights connects to airlines through the variable, carrier.
+flights connects to airports through the variables origin and dest.
+flights connects to weather through the variables year, month, day, hour, origin, 
 
 ```{r}
 
