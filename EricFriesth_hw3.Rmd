@@ -143,7 +143,7 @@ flights_planes =
     "tailnum" = "tailnum"
   ))
 
-head(flight_planes)
+head(flights_planes)
 
 ggplot(flights_planes, aes(x = age, y = dep_delay)) + geom_point() + labs()
 
