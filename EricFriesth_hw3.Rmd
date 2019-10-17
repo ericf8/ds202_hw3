@@ -11,35 +11,34 @@ knitr::opts_chunk$set(echo = TRUE)
 1. 
 ```{r}
 
-?flights
-
 data(flights,package="nycflights13")
 
 LongDelay = subset(flights, flights$arr_delay >= 200)
-LongDelay
+head(LongDelay)
 
 
 HoustonFlights = subset(flights, flights$dest == "IAH" | flights$dest == "HOU")
-HoustonFlights
+head(HoustonFlights)
 
 
 SummerDepart = subset(flights, flights$month == 7 | flights$month == 8 | flights$month == 9)
-SummerDepart
+head(SummerDepart)
 
 
 LongDelay2 = subset(flights, flights$dep_delay <= 0 & flights$arr_delay >= 120)
-LongDelay2
+head(LongDelay2)
 
 
 QuickFlight = subset(flights, flights$dep_delay >= 60 & flights$dep_delay - flights$arr_delay > 30)
-QuickFlight
+head(QuickFlight)
 
 ```
 2. 
 
 ```{r}
 
-cancelledFlights = is.na(dep_delay) | isna(arr_delay)
+cancelledFlights = is.na(flights$dep_delay) | is.na(flights$arr_delay)
+head(cancelledFlights)
 
 
 ```
@@ -47,11 +46,15 @@ cancelledFlights = is.na(dep_delay) | isna(arr_delay)
 
 ```{r}
 
-ggplot(flights, aes(x = flights$hour, y = flights$dep_time)) + geom_point()
+library(ggplot2)
 
+zeroDelay = subset(flights, flights$dep_delay <= 0 & flights$arr_delay <= 0)
+
+ggplot(zeroDelay, aes(x = zeroDelay$dep_time, group = zeroDelay$hour, bins = 24)) + geom_histogram() + labs(title = "Distribution of Flights with No Delay by Hour", x = "Departure Time (Hour)", y = "Frequency of Flight") + scale_x_continuous(limits=c(0, 2400))
 
 
 ```
+4.
 
 ```{r}
 
@@ -65,13 +68,113 @@ data(weather,package='nycflights13')
 ```{r}
 
 library(nycflights13)
-?flights
-?airlines
 ?airports
-?planes
-?weather
 
 ```
+5.
+
+6.
+
+```{r}
+
+flight_weather = 
+flights %>%
+inner_join(weather, by = c(
+  "origin" = "origin",
+  "year" = "year",
+  "month" = "month",
+  "day" = "day",
+  "hour" = "hour"
+ ))
+
+head(flight_weather)
+
+weatherDelays = filter(flight_weather, (dep_delay > 60) | (arr_delay) > 60)
+
+head(weatherDelays)
+
+
+ggplot(weatherDelays, aes(x = weatherDelays$wind_speed)) + geom_histogram(bins = 15) + labs(title = "Distribution of Frequency of Flights by Different Wind Speeds", x = "Wind Speed (Miles per Hour)", y = "Frequency of Flights")
+
+ggplot(weatherDelays, aes(x = weatherDelays$visib)) + geom_histogram(bins = 10) + labs(title = "Distribution of Frequency of Flights by Different Levels of Visibility", x = "Visibility (miles)", y = "Frequency of Flights")
+
+ggplot(weatherDelays, aes(x = weatherDelays$precip)) + geom_histogram(bins = 15) + labs(title = "Distribution of Frequency of Flights by Different Levels of Precipitation", x = "Precipitation (inches)", y = "Frequency of Flights")
+
+```
+
+7. 
+
+```{r}
+
+flight_weather_left = 
+flights %>%
+left_join(weather, by = c(
+  "origin" = "origin",
+  "year" = "year",
+  "month" = "month",
+  "day" = "day",
+  "hour" = "hour"
+ ))
+
+head(flight_weather_left)
+
+weatherDelays_left = filter(flight_weather_left, (dep_delay > 60) | (arr_delay) > 60)
+
+head(weatherDelays_left)
+
+
+ggplot(weatherDelays_left, aes(x = weatherDelays_left$wind_speed)) + geom_histogram(bins = 15) + labs(title = "Distribution of Frequency of Flights by Different Wind Speeds", x = "Wind Speed (Miles per Hour)", y = "Frequency of Flights")
+
+ggplot(weatherDelays_left, aes(x = weatherDelays_left$visib)) + geom_histogram(bins = 10) + labs(title = "Distribution of Frequency of Flights by Different Levels of Visibility", x = "Visibility (miles)", y = "Frequency of Flights")
+
+ggplot(weatherDelays_left, aes(x = weatherDelays_left$precip)) + geom_histogram(bins = 15) + labs(title = "Distribution of Frequency of Flights by Different Levels of Precipitation", x = "Precipitation (inches)", y = "Frequency of Flights")
+
+```
+
+8.
+
+```{r}
+
+planes = mutate(planes, "age" = 2019 - planes$year)
+
+flights_planes =
+  planes %>% 
+  inner_join(flights, by = c(
+    "tailnum" = "tailnum"
+  ))
+
+head(flight_planes)
+
+ggplot(flights_planes, aes(x = age, y = dep_delay)) + geom_point() + labs()
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
