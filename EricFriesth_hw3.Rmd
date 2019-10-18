@@ -84,14 +84,17 @@ data(weather,package='nycflights13')
 ```{r}
 
 library(nycflights13)
-?airports
+#?airports
 
 ```
-5.
+5. The airports set is connected through the flights set by the variables origin and dest and thus connects to the weather set through the same variable origin.
 
-6.
+6. Based on the three distribution plots below looking at the features, wind speed, precipitation, and visiblity, you are likely to fly in a multitude of wind speed with that distribution being a pretty even bell curve but are unlikely to fly in any kind of low visibility and any kind of precipitation.
 
 ```{r}
+
+library(dplyr)
+library(tidyverse)
 
 flight_weather = 
 flights %>%
@@ -118,9 +121,10 @@ ggplot(weatherDelays, aes(x = weatherDelays$precip)) + geom_histogram(bins = 15)
 
 ```
 
-7. 
+7. Using the function INNER_JOIN on two datasets returns the rows when there's match ups in those datasets while the function LEFT_JOIN returns all the observations from the left dataset even if they aren't found matched up in the other dataset. 
 
 ```{r}
+
 
 flight_weather_left = 
 flights %>%
@@ -147,7 +151,7 @@ ggplot(weatherDelays_left, aes(x = weatherDelays_left$precip)) + geom_histogram(
 
 ```
 
-8.
+8. Using the scatter plot below, I see that there isn't an overwhelming correlation between the age of a plane and departure delays but we do see more incidents of total flights in planes younger than 40.
 
 ```{r}
 
@@ -166,6 +170,16 @@ ggplot(flights_planes, aes(x = age, y = dep_delay)) + geom_point() + labs()
 
 ```
 
+9. In the first argument, we are shown the flights dataset with the faa from airports connected by dest 
+and in the second, we are shown the airports dataset with the dest of flights connected by faa. 
+
+```{r}
+
+anti_join(flights, airports, by = c("dest" = "faa"))
+
+anti_join(airports, flights, by = c("faa" = "dest"))
+
+```
 
 
 
